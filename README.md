@@ -1,2 +1,2 @@
-# st-montecarlo-simulation-m7
-Simple app in streamlit to show a Monte Carlo simulation
+# Simple Monte CArlo simulation in Streamlit
+Simple app in streamlit to show a Monte Carlo simulation in Streamlit
