@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+import numexpr as ne
 import pandas as pd
 
 
@@ -9,7 +10,8 @@ def Hist(trials:int)-> tuple[np.array, pd.DataFrame]:
     # Vectorized version, much faster (Annual interest from 40% to 70% random normal)
     distribution = (1+np.random.normal(0.4, 0.7, (12,trials))/12)
     interest = np.array([range(12,0,-1)]).T
-    res = (10*((distribution)**interest)).sum(axis=0)
+    #res = (10*((distribution)**interest)).sum(axis=0)
+    res = ne.evaluate("sum(10*(distribution**interest),axis=0)") # use numexpr engine
    
     # Add statistics
     avg = np.mean(res)  # Mean
@@ -31,7 +33,7 @@ st.subheader("Cumulative Account Balance with a Monthly $10 Dollar Investment an
 
     
 # Select number of trials from listbox
-trial_range = map(lambda x: int(np.power(10,x)), range(2,7)) # from 100 to 1_000_000
+trial_range = map(lambda x: int(np.power(10,x)), range(2,8)) # from 100 to 10_000_000
 
 # I used a comma to seprate thousands for better readability
 trials = st.selectbox('Select number of trials', trial_range, format_func=lambda x: f"{x:,}")
